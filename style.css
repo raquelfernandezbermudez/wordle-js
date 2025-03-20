@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-image: url('/img/fondo.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+}
+
+h1 {
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-weight: 900;
+    color: purple;
+}
+
+h2 {
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-weight: 300;
+    color: purple;
+}
+
+#game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.attempt-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+input {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 2px solid #e2cef6;
+    border-radius: 10px;
+    background-color: #e2cef6;
+    color: purple;
+}
+
+input:focus {
+    outline: none;
+    border-color: purple;
+}
+
+input:disabled {
+    opacity: 0.9;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    background-color: purple;
+    color: #e2cef6;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #e2cef6;
+    color: purple;
+}
+
+/* Colores para indicar los aciertos */
+.correct {
+    background-color: green !important; /* Letra correcta en su lugar */
+    color: white !important;
+}
+
+.present {
+    background-color: orange !important; /* Letra correcta en otra posición */
+    color: white !important;
+}
+
+.absent {
+    background-color: transparent !important; /* Letra incorrecta */
+    color: purple !important;
+}
