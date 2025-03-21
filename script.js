@@ -11,10 +11,6 @@ function createGameBoard() {
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         const row = document.createElement('div');
         row.className = `attempt-row attempt-${attempt}`;
-        row.style.display = 'flex';
-        row.style.justifyContent = 'center';
-        row.style.gap = '10px';
-        row.style.margin = '10px 0';
         
         // Crear inputs para cada letra
         for (let i = 0; i < 5; i++) {
@@ -57,6 +53,39 @@ function setupRowInputEvents(rowIndex) {
     });
 }
 
+// Mostrar notificación personalizada
+function showNotification(type, message) {
+    // Eliminar notificaciones anteriores
+    const oldNotification = document.querySelector('.custom-notification');
+    if (oldNotification) {
+        oldNotification.remove();
+    }
+    
+    // Crear nueva notificación
+    const notification = document.createElement('div');
+    notification.className = `custom-notification ${type}`;
+    notification.textContent = message;
+    
+    // Añadir botón de cierre
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'close-btn';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = function() {
+        notification.remove();
+    };
+    notification.appendChild(closeBtn);
+    
+    // Añadir al DOM
+    document.body.appendChild(notification);
+    
+    // Auto-cerrar después de 5 segundos (opcional)
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
 // Comprobar la palabra ingresada
 function checkWord() {
     const currentRowInputs = document.querySelectorAll(`.letter-input.row-${currentAttempt}`);
@@ -69,12 +98,7 @@ function checkWord() {
     
     // Verificar que se hayan ingresado 5 letras
     if (userWord.length !== 5) {
-        Swal.fire({
-            icon: "warning",
-            title: "¡Atención!",
-            text: "Debes ingresar 5 letras.",
-            confirmButtonColor: "#f39c12",
-        });
+        showNotification('warning', '¡Debes ingresar 5 letras!');
         return;
     }
     
@@ -96,12 +120,7 @@ function checkWord() {
     
     // Si acierta la palabra, mostrar mensaje de éxito
     if (correctLetters === 5) {
-        Swal.fire({
-            icon: "success",
-            title: "¡Felicidades!",
-            text: "Has adivinado la palabra 🎉",
-            confirmButtonColor: "#28a745",
-        });
+        showNotification('success', '¡Felicidades! Has adivinado la palabra 🎉');
         // Fin del juego
         return;
     }
@@ -122,20 +141,27 @@ function checkWord() {
         nextRowInputs[0].focus();
     } else {
         // Se acabaron los intentos
-        Swal.fire({
-            icon: "error",
-            title: "¡Fin del juego!",
-            text: `La palabra correcta era ${wordToGuess}`,
-            confirmButtonColor: "#dc3545",
-        });
+        showNotification('error', `¡Fin del juego! La palabra correcta era ${wordToGuess}`);
     }
 }
 
 // Inicializar el juego
 document.addEventListener("DOMContentLoaded", function() {
     createGameBoard();
-    
-    // Configurar el botón de comprobación
-    const checkButton = document.getElementById("check-word");
-    checkButton.addEventListener("click", checkWord);
+
+    // Configurar la comprobación al presionar "Enter"
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            checkWord();
+        }
+    });
 });
+
+    // Botón de nuevo juego
+    const newGame = document.getElementById("new-game");
+    
+    newGame.addEventListener("click", function() {
+        currentAttempt = 0;
+        createGameBoard();
+    }
+    );
